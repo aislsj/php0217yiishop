@@ -18,6 +18,7 @@
                 <td><?=$brand->id?></td>
                 <td><?=$brand->name?></td>
                 <td><?=$brand->intro?></td>
+
                 <td><?=$brand->article_category->name?></td>
                 <td><?=$brand->sort?></td>
                 <td><?=($brand->status)?'正常':'隐藏'?></td>
@@ -34,3 +35,4 @@
         </tr>
     <?php endforeach;?>
 </table>
+

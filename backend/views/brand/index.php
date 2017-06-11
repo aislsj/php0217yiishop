@@ -1,4 +1,5 @@
 <?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-success'])?>
+
 <table class="table table-bordered">
     <tr>
         <th class="col-lg-1">ID</th>
@@ -9,7 +10,7 @@
         <th class="col-lg-1">状态</th>
         <th class="col-lg-3">操作</th>
     </tr>
-    <?php foreach($models as $brand):?>
+    <?php foreach($brand as $brand):?>
     <tr>
         <?php
             if($brand->status >=0 ){
@@ -17,7 +18,7 @@
                 <td><?=$brand->id?></td>
                 <td><?=$brand->name?></td>
                 <td><?=$brand->intro?></td>
-                <td><img src="<?=$brand->logo?>" width="80px"></td>
+                <td><img src="<?=$brand->logo?>" height="70px"></td>
                 <td><?=$brand->sort?></td>
                 <td><?=($brand->status)?'正常':'隐藏'?></td>
                 <td>
@@ -31,3 +32,13 @@
     </tr>
     <?php endforeach;?>
 </table>
+
+<?php
+//分页工具条
+//var_dump($page);exit;
+echo \yii\widgets\LinkPager::widget([
+
+    'pagination'=>$page,
+    'nextPageLabel'=>'下一页',
+    'prevPageLabel'=>'上一页',
+]);

@@ -11,7 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'language'=>'zh-CN',//ÓïÑÔ
+    'language'=>'zh-CN',//ï¿½ï¿½ï¿½ï¿½
     'modules' => [],
     'components' => [
         'request' => [
@@ -45,7 +45,14 @@ return [
             'rules' => [
             ],
         ],
-
+        'qiniu'=>[
+            'class'=>\backend\components\Qiniu::className(),
+            'up_host'=>'http//up-z2.qiniu.com',
+            'accessKey'=>'2X9_0_WY_NGmk39Q_VdmcCPAfpTp5d1kTVQLsaBm',
+            'secretKey'=>'wMfIbgxTRUDWdCCyc4ORcrrUgKvr0pqRniNaAQ9k',
+            'bucket'=>'php0217',
+            'domain'=>'http://or9s4y31r.bkt.clouddn.com.com/',
+        ]
     ],
     'params' => $params,
 ];

@@ -15,6 +15,7 @@ class ArticleController extends \yii\web\Controller
         $model2 = ArticleCategory::find()->all();
 //        $model->ais = 1;
 //        $model2 = ArticleCategory::find()->all();
+//        var_dump($model);
         return $this->render('index',['models'=>$model]);
     }
 
@@ -24,6 +25,12 @@ class ArticleController extends \yii\web\Controller
         $model = new Article();
         $model2 = new ArticleDetail();
         $category=ArticleCategory::find()->asArray()->all();
+        $count=[];
+        foreach($category as $v){
+            if($v['status']>=0){
+                $count[$v['id']]=$v['name'];
+            }
+        }
         $request=new Request();
         if($request->isPost){
             $model->load($request->post());
@@ -31,10 +38,6 @@ class ArticleController extends \yii\web\Controller
             if($model->validate()){
                 $model->create_time=time();
                 $model->save();
-                $count=[];
-                foreach($category as $v){
-                    $count[$v['id']]=$v['name'];
-                }
                 if($model2->validate()){
                     $model2->article_id=$model->id;
                     $model2->save();
@@ -45,7 +48,7 @@ class ArticleController extends \yii\web\Controller
                 var_dump($model->getErrors());exit;
             }
         }
-        return $this->render('add',['model'=>$model,'category'=>$category,'model2'=>$model2]);
+        return $this->render('add',['model'=>$model,'category'=>$count,'model2'=>$model2]);
     }
 
     //修改文章
@@ -53,6 +56,12 @@ class ArticleController extends \yii\web\Controller
         $model = Article::findOne(['id'=>$id]);
         $model2 = ArticleDetail::findOne(['article_id'=>$id]);
         $category=ArticleCategory::find()->asArray()->all();
+        $count=[];
+        foreach($category as $v){
+            if($v['status']>=0){
+                $count[$v['id']]=$v['name'];
+            }
+        }
         $request=new Request();
         if($request->isPost){
             $model->load($request->post());
@@ -60,10 +69,6 @@ class ArticleController extends \yii\web\Controller
             if($model->validate()){
                 $model->create_time=time();
                 $model->save();
-                $count=[];
-                foreach($category as $v){
-                    $count[$v['id']]=$v['name'];
-                }
                 if($model2->validate()){
                     $model2->article_id=$model->id;
                     $model2->save();
@@ -74,7 +79,7 @@ class ArticleController extends \yii\web\Controller
                 var_dump($model->getErrors());exit;
             }
         }
-        return $this->render('add',['model'=>$model,'category'=>$category,'model2'=>$model2]);
+        return $this->render('add',['model'=>$model,'category'=>$count,'model2'=>$model2]);
     }
 
     //删除文章

@@ -31,12 +31,12 @@ class Brand extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','logo'], 'required'],
             [['intro'], 'string'],
             [['sort', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['logo'], 'string', 'max' => 255],
-            ['imgFile','file','extensions'=>['jpg','png','gif']]
+//            ['imgFile','file','extensions'=>['jpg','png','gif']]
         ];
     }
 
