@@ -13,7 +13,7 @@ echo $form->field($model2,'content')->textarea();
 
 
 //var_dump($category);exit;
-echo $form->field($model,'article_category_id')->dropDownList($category);
+echo $form->field($model,'article_category_id')->dropDownList($category,['prompt'=>'=请选择分类=']);
 
 //echo $form->field($model,'article_category_id');
 echo $form->field($model,'sort');

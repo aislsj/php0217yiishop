@@ -59,6 +59,7 @@ class BrandController extends \yii\web\Controller
     public function actionIndex(){
         //获得所有书籍
         $model = Brand::find();
+//        var_dump($model);exit;
         //获取总条数
         $total = $model->count();
 //        var_dump($total);exit;
@@ -66,8 +67,6 @@ class BrandController extends \yii\web\Controller
             'totalCount'=>$total,
             'defaultPageSize'=>2,
         ]);
-//        var_dump($page);exit;
-        //看不懂?
         $Brand = $model->offset($page->offset)->limit($page->limit)->all();
         return $this->render('index',['brand'=>$Brand,'page'=>$page]);
     }

@@ -44,8 +44,5 @@ if($model->logo){
 }else{
     echo \yii\helpers\Html::img('',['style'=>'display:none','id'=>'img_logo','height'=>'50']);
 }
-
-echo $form->field($model,'sort');
-echo $form->field($model,'status')->radioList([1=>'正常',0=>'隐藏']);
 echo \yii\bootstrap\Html::submitButton('提交',['class'=>'btn btn-info']);
 \yii\bootstrap\ActiveForm::end();

@@ -38,12 +38,14 @@ AppAsset::register($this);
         ['label' => '品牌管理', 'url' => ['/brand/index']],
         ['label' => '文章类型', 'url' => ['/article_category/index']],
         ['label' => '文章管理', 'url' => ['/article/index']],
+        ['label' => '商品管理', 'url' => ['/goods/index']],
+        ['label' => '管理员管理', 'url' => ['/user/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '登录', 'url' => ['/user/login']];
     } else {
         $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
+            . Html::beginForm(['/user/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']

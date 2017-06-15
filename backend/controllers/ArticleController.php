@@ -4,6 +4,7 @@ namespace backend\controllers;
 use backend\models\Article;
 use backend\models\ArticleCategory;
 use backend\models\ArticleDetail;
+use yii\data\Pagination;
 use yii\web\Request;
 
 class ArticleController extends \yii\web\Controller
@@ -11,12 +12,20 @@ class ArticleController extends \yii\web\Controller
     //显示文章列表
     public function actionIndex()
     {
-        $model = Article::find()->all();
-        $model2 = ArticleCategory::find()->all();
-//        $model->ais = 1;
-//        $model2 = ArticleCategory::find()->all();
-//        var_dump($model);
-        return $this->render('index',['models'=>$model]);
+//        $model2 = Article::find()->all();
+        $model = Article::find();
+//        var_dump($model2);exit;
+        //获取总条数
+        $total = $model->count();
+//        var_dump($total);exit;
+        $page = new Pagination([
+            'totalCount'=>$total,
+            'defaultPageSize'=>2,
+        ]);
+        $Brand = $model->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('index',['brand'=>$Brand,'page'=>$page]);
+
+//        return $this->render('index',['models'=>$model]);
     }
 
 

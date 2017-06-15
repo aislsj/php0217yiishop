@@ -10,7 +10,7 @@
         <th class="col-lg-1">创建时间</th>
         <th class="col-lg-2">操作</th>
     </tr>
-    <?php foreach($models as $brand):?>
+    <?php foreach($brand as $brand):?>
         <tr>
             <?php
             if($brand->status >=0 ){
@@ -18,7 +18,6 @@
                 <td><?=$brand->id?></td>
                 <td><?=$brand->name?></td>
                 <td><?=$brand->intro?></td>
-
                 <td><?=$brand->article_category->name?></td>
                 <td><?=$brand->sort?></td>
                 <td><?=($brand->status)?'正常':'隐藏'?></td>
@@ -36,3 +35,12 @@
     <?php endforeach;?>
 </table>
 
+<?php
+//分页工具条
+//var_dump($page);exit;
+echo \yii\widgets\LinkPager::widget([
+
+    'pagination'=>$page,
+    'nextPageLabel'=>'下一页',
+    'prevPageLabel'=>'上一页',
+]);
