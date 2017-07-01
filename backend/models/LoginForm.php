@@ -16,7 +16,7 @@ class LoginForm extends Model{
         return [
             [['username','password'],'required'],
             //添加自定义验证方法
-            ['username','validateName'],
+
             ['ais','boolean'],
             ['code','captcha','captchaAction'=>'user/captcha'],
         ];
@@ -32,22 +32,26 @@ class LoginForm extends Model{
         ];
     }
 
-//$model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
 
-    //自定义验证方法
-    public function validateName(){
-        $account = User::findOne(['username'=>$this->username]);
-        if($account){
-            //用户存在 验证密码
-            if(!\Yii::$app->security->validatePassword($this->password,$account->password_hash)){
-                $this->addError('password','密码不正确');
+    public function login(){
+        //1 根据用户名查找用户
+        $admin = User::findOne(['username'=>$this->username]);
+        if($admin){
+            //2 验证密码
+            if(\Yii::$app->security->validatePassword($this->password,$admin->password_hash)){
+                //3 登录
+                //自动登录
+                $duration = $this->ais?7*24*3600:0;
+//                var_dump($admin);exit;
+                \Yii::$app->user->login($admin,$duration);
+                return true;
             }else{
-                //账号秘密正确，登录
-                \Yii::$app->user->login($account);
+                $this->addError('password','密码不正确');
             }
         }else{
-            //账号不存在  添加错误
-            $this->addError('username','账号不正确');
+            $this->addError('username','用户名不存在');
         }
+        return false;
     }
+
 }

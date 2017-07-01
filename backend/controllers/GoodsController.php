@@ -14,7 +14,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
 
-class GoodsController extends \yii\web\Controller
+class GoodsController extends BackendController
 {
     //商品的显示
     public function actionIndex()
@@ -136,17 +136,12 @@ class GoodsController extends \yii\web\Controller
                 $goodsday->day=date('Y-m-d');
                 $goodsday->count=1;
             }
-//            var_dump($model->load(\yii::$app->request->post()));
-//            var_dump($model);
-//            echo '11111111111111111111111111111';
-
             $model->sn=$sn;
             $model->create_time=time();
             $model->save();
             $goodsday->save();
             $model3->goods_id = $model->id;
-//            var_dump($model->id);
-//            var_dump($model3->goods_id);
+
             $model3->save();
             \Yii::$app->session->setFlash('success','商品添加成功');
             return $this->redirect(['goods/index']);

@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use backend\models\GoodsIntro;
 
-class Goods_introController extends \yii\web\Controller
+class Goods_introController extends BackendController
 {
     public function actionIndex($id)
     {

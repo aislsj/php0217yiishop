@@ -90,7 +90,7 @@ class Goods extends \yii\db\ActiveRecord
      */
     public function getGalleries()
     {
-        return $this->hasMany(GoodsGallery::className(),['goods_id'=>'id']);
+        return $this->hasMany(Photo::className(),['good_id'=>'id']);
     }
 
     /*

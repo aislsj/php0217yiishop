@@ -10,7 +10,7 @@ echo Uploadify::widget([
     'csrf' => true,
     'renderTag' => false,
     'jsOptions' => [
-        'formData'=>['goods_id'=>$goods->id],//上传文件的同时传参goods_id
+        'formData'=>['good_id'=>$goods->id],//上传文件的同时传参goods_id
         'width' => 120,
         'height' => 40,
         'onUploadError' => new JsExpression(<<<EOF
@@ -47,11 +47,9 @@ EOF
             <th>操作</th>
         </tr>
         <?php foreach($goods->galleries as $gallery):?>
-            <?php
-            var_dump($gallery);exit;
-            ?>
+
             <tr id="gallery_<?=$gallery->id?>" data-id="<?=$gallery->id?>">
-                <td><?=Html::img($gallery->path)?></td>
+                <td><?=Html::img($gallery->url,['width'=>290])?></td>
                 <td><?=Html::button('删除',['class'=>'btn btn-danger del_btn'])?></td>
             </tr>
         <?php endforeach;?>

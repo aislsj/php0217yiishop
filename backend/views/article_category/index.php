@@ -21,8 +21,14 @@
                 <td><?=($brand->status)?'正常':'隐藏'?></td>
                 <td><?=($brand->is_help)?'导购文章':'帮助文章'?></td>
                 <td>
-                    <?=\yii\bootstrap\Html::a('修改',['article_category/edit','id'=>$brand->id],['class'=>'btn btn-info btn-xs'])?>
-                    <?=\yii\bootstrap\Html::a('删除',['article_category/delete','id'=>$brand->id],['class'=>'btn btn-danger btn-xs'])?>
+                   <?php
+                   if(\Yii::$app->user->can('article_category/edit'))
+                       echo \yii\bootstrap\Html::a('修改',['article_category/edit','id'=>$brand->id],['class'=>'btn btn-info btn-xs']);
+                       ?>
+                   <?php
+                   if(\Yii::$app->user->can('article_category/delete'))
+                       echo \yii\bootstrap\Html::a('删除',['article_category/delete','id'=>$brand->id],['class'=>'btn btn-danger btn-xs']);
+                   ?>
                 </td>
                 <?php
             }

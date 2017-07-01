@@ -4,17 +4,19 @@ namespace backend\controllers;
 
 use backend\models\User;
 use backend\models\LoginForm;
+use yii\helpers\ArrayHelper;
 use yii\web\Request;
 
 use yii\filters\AccessControl;
 
 
 
-class UserController extends \yii\web\Controller
+class UserController extends BackendController
 {
     //显示管理员列表
     public function actionIndex()
     {
+//        var_dump(\Yii::$app->user->identity);
         $model = User::find()->all();
 //        var_dump($model);exit;
         return $this->render('index', ['model' => $model]);
@@ -24,16 +26,11 @@ class UserController extends \yii\web\Controller
     public function actionAdd()
     {
         $model = new User();
-        if ($model->load(\Yii::$app->request->post())) {
-
-            if ($model->validate()) {
-                $model->last_login = time();
-                $model->last_ip = $_SERVER["REMOTE_ADDR"];
-                $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
-                $model->save();
+        if($model->load(\Yii::$app->request->post())&& $model->validate()){
+            if($model->addUser($model)){
                 \Yii::$app->session->setFlash('success', '成功');
                 return $this->redirect(['user/index']);
-            } else {
+            }else {
                 var_dump($model->getErrors());
                 exit;
             }
@@ -45,19 +42,24 @@ class UserController extends \yii\web\Controller
     public function actionEdit($id)
     {
         $model = User::findOne($id);
-        if ($model->load(\Yii::$app->request->post())) {
-            if ($model->validate()){
-                $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
-                $model->save();
+        $authManager = \Yii::$app->authManager;
+
+        if ($model->load(\Yii::$app->request->post())&&$model->validate()) {
+
+            if($model->updateUser($model)){
                 \Yii::$app->session->setFlash('success', '成功');
                 return $this->redirect(['user/index']);
-            } else {
+            }else {
                 var_dump($model->getErrors());
                 exit;
             }
         }
+        $model->password_hash = '123456';
+        $model->permissions = ArrayHelper::getColumn(\Yii::$app->authManager->getRolesByUser($id),'name');
         return $this->render('add', ['model' => $model]);
     }
+
+
 
     //删除管理员
     public function actionDelete($id){
@@ -73,24 +75,23 @@ class UserController extends \yii\web\Controller
     {
         $model = new LoginForm();
         $request = \Yii::$app->request;
-        if($request->isPost){
-            $model->load($request->post());
-            var_dump($model);exit;
-
-            if($model->validate()){
-//                var_dump($model->validate());exit;
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            if($model->login()){
                 $models = User::findOne(['username'=>$model['username']]);
-//                var_dump($models);exit;
-
                 $models->last_login = time();
                 $models->last_ip = $_SERVER["REMOTE_ADDR"];
-//                var_dump($models);exit;
                 $models->save(false);
-                //跳转到登录检测页
+                \Yii::$app->session->setFlash('success','登录成功');
                 return $this->redirect(['user/index']);
+//                return $this->redirect(['user/aaa']);//验证登录信息
             }
         }
         return $this->render('login',['model'=>$model]);
+    }
+
+    //检查登录状态
+    public function actionAaa(){
+        var_dump(\Yii::$app->user->identity);
     }
 //
     //没登录调回到登录页面
@@ -105,7 +106,7 @@ class UserController extends \yii\web\Controller
         return [
             'acf'=>[
                 'class' => AccessControl::className(),//过滤器
-               'only'=>['add','edit','delete','index','Ais'],//该过滤器作用的操作 ，默认是所有操作
+                'only'=>['add','edit','delete','index','Ais'],//该过滤器作用的操作 ，默认是所有操作
                 'rules'=>[
                     [//未认证用户允许执行view操作
                         'allow'=>true,//是否允许执行

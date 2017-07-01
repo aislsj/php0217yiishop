@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -26,7 +27,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-
+    public $permissions=[];
     public static function tableName()
     {
         return 'user';
@@ -44,7 +45,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
-
+            [['permissions'],'safe'],
             [['password_reset_token'], 'unique'],
             [['email'],'match','pattern'=>'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$^'],
         ];
@@ -68,6 +69,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => 'Updated At',
             'last_login' => 'Last Login',
             'last_ip' => 'Last Ip',
+            'permissions'=>'管理员类型'
         ];
     }
 
@@ -122,7 +124,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->auth_key;
     }
 
     /**
@@ -135,6 +137,53 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        return $this->getAuthKey() == $authKey;
+    }
+
+
+    public static function getPermissionOptions(){
+        $authManager = \Yii::$app->authManager;
+
+//        return ArrayHelper::map($authManager->getRoles(),'name','description');
+        return ArrayHelper::map($authManager->getRoles(),'name','name');
+
+    }
+
+
+    public function addUser($model){
+        $authManager = \Yii::$app->authManager;
+            $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
+        if($model->save()){
+            foreach($this->permissions as $role){
+                $role = $authManager->getRole($role);//获得权限
+                //这里加if是害怕如果在操作的时候有人把权限删了 ,可以加个判断
+                if($role) $authManager->assign($role,$model->id);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function updateUser($model){
+       $models = User::findOne($model->id);
+
+        $authManager = \Yii::$app->authManager;
+         $authManager->getRolesByUser($model->id);
+        if($model->password_hash=123456){
+            $model->password_hash = $models->password_hash;
+        }else{
+            $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
+        }
+        if($model->save()){
+            $authManager->revokeAll($model->id);
+            //关联该角色的权限
+            foreach($this->permissions as $role){
+                $role = $authManager->getRole($role);//获得权限
+                //这里加if是害怕如果在操作的时候有人把权限删了 ,可以加个判断
+                if($role) $authManager->assign($role,$model->id);
+            }
+            return true;
+        }
+        return false;
     }
 }

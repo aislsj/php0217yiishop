@@ -6,7 +6,7 @@ use backend\models\GoodsCategory;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
-class GoodscategoryController extends \yii\web\Controller
+class GoodscategoryController extends BackendController
 {
     public function actionIndex()
     {
@@ -16,13 +16,11 @@ class GoodscategoryController extends \yii\web\Controller
     }
 
     public function actionText(){
-//        echo 1;exit;
 //       $ais =  new GoodsCategory();
 //        $ais->name='家用电器';
 //        $ais->parent_id = 0;
 //        $ais->makeRoot();
 //        var_dump($ais);
-
         //创建二级分类
 //        $parent = GoodsCategory::findOne(['id'=>1]);
 //        $xjd = new GoodsCategory();
@@ -30,11 +28,9 @@ class GoodscategoryController extends \yii\web\Controller
 //        $xjd->parent_id = $parent->id;
 //        $xjd->prependTo($parent);
 //        echo '操作成功';
-
         //获取所有一级分类
 //        $roots = GoodsCategory::find()->roots()->all();
 //        var_dump($roots);
-
         // 获取该分类下面的所有子孙分类
         $roots = GoodsCategory::findOne(['id'=>1]);
         $children = $roots->leaves()->all();
@@ -49,7 +45,7 @@ class GoodscategoryController extends \yii\web\Controller
     public function actionAdd(){
         $model = new GoodsCategory();
         if($model->load(\Yii::$app->request->post())&& $model->validate()){
-            var_dump($model);exit;
+//            var_dump($model);exit;
             //判断是否是添加一级分类(parent_id是否为0)
             if($model->parent_id){
                 //添加非一级分类

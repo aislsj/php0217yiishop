@@ -27,37 +27,8 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => '天才第一步',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => '品牌管理', 'url' => ['/brand/index']],
-        ['label' => '文章类型', 'url' => ['/article_category/index']],
-        ['label' => '文章管理', 'url' => ['/article/index']],
-        ['label' => '商品管理', 'url' => ['/goods/index']],
-        ['label' => '管理员管理', 'url' => ['/user/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '登录', 'url' => ['/user/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/user/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
+    //把整个导航取出来
+   echo  \backend\widgets\MenuWidget::widget();
     ?>
 
     <div class="container">

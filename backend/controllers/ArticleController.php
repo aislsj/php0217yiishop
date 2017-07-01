@@ -7,7 +7,7 @@ use backend\models\ArticleDetail;
 use yii\data\Pagination;
 use yii\web\Request;
 
-class ArticleController extends \yii\web\Controller
+class ArticleController extends BackendController
 {
     //显示文章列表
     public function actionIndex()

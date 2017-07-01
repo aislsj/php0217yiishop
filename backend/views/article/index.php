@@ -23,9 +23,10 @@
                 <td><?=($brand->status)?'正常':'隐藏'?></td>
                 <td><?=date('Y-m-d ',$brand->create_time)?></td>
                 <td>
-                    <?=\yii\bootstrap\Html::a('查看',['article/show','id'=>$brand->id],['class'=>'btn btn-info btn-xs'])?>
-                    <?=\yii\bootstrap\Html::a('修改',['article/edit','id'=>$brand->id],['class'=>'btn btn-info btn-xs'])?>
-                    <?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$brand->id],['class'=>'btn btn-danger btn-xs'])?>
+                    <?php
+                    if(\Yii::$app->user->can('article/edit')) echo \yii\bootstrap\Html::a('修改',['article/edit','id'=>$brand->id],['class'=>'btn btn-info btn-xs']);
+                    if(\Yii::$app->user->can('article/delete')) echo \yii\bootstrap\Html::a('删除',['article/delete','id'=>$brand->id],['class'=>'btn btn-danger btn-xs'])
+                    ?>
                 </td>
             <?php
             }

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\Brand;
 use yii\web\UploadedFile;
 use yii\data\Pagination;
@@ -9,9 +10,19 @@ use xj\uploadify\UploadAction;
 use crazyfd\qiniu\Qiniu;
 
 
+class BrandController extends BackendController
 
-class BrandController extends \yii\web\Controller
 {
+
+    //使用过滤器
+    public function behaviors(){
+        return [
+          'rbac'=>[
+              'class'=>RbacFilter::className(),
+          ]
+        ];
+    }
+
     //添加品牌
     public function actionAdd(){
     $model = new Brand();
