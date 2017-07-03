@@ -218,8 +218,11 @@ class GoodsController extends \yii\web\Controller{
     public function actionAddOrder(){
         $model = new Order();
         $delivery_id = Yii::$app->request->post('delivery'); //送货方式id
+//        var_dump($delivery_id);exit;
         $address_id  = Yii::$app->request->post('address_id'); //地址id
-        $num  = Yii::$app->request->post('mouey'); //地址id
+
+        $num  = Yii::$app->request->post('mouey'); //总金钱
+        var_dump($num);exit;
         $pay_id = Yii::$app->request->post('pay');//支付方式id
         $address = Address::findOne(['id'=>$address_id,'member_id'=>Yii::$app->user->id]);
         if($address == null){

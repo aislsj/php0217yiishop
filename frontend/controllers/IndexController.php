@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use backend\models\GoodsCategory;
-use yii\base\Controller;
+
 
 class IndexController extends \yii\web\Controller{
 

@@ -81,6 +81,7 @@ class MemberController extends \yii\web\Controller
         var_dump($code);exit;
     }
 
+
     //发送电话并且验证
     public function actionSendSms()
     {
