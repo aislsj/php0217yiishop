@@ -277,10 +277,12 @@ use yii\helpers\Html;
                             <dl>
                                 <dt>&nbsp;</dt>
                                 <dd>
-                                    <input type="submit" value="" class="add_btn" />
-                                    <input type="hidden" name="goods_id" value="<?=$goods->id?>">
-                                    <input name="_csrf-frontend" type="hidden" id="_csrf-frontend" value="<?= Yii::$app->request->csrfToken ?>">
-                                </dd>
+
+                                        <input type="submit" value="" class="add_btn" />
+                                        <input type="hidden" name="goods_id" value="<?=$goods->id?>">
+                                        <input name="_csrf-frontend" type="hidden" id="_csrf-frontend" value="<?= Yii::$app->request->csrfToken ?>">
+
+                                 </dd>
                             </dl>
                         </li>
 

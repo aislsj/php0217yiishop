@@ -76,10 +76,10 @@ use yii\helpers\Html;
         </tr>
         </tfoot>
     </table>
+<!--    --><?//=\yii\helpers\Url::to(['goods/add'])?>
     <div class="cart_btn w990 bc mt10">
         <a href="" class="continue">继续购物</a>
-        <a href="" class="checkout">结 算</a>
-
+          <?=Html::a('结 算',['goods/order'],['class'=>'checkout'])?>
     </div>
 </div>
 <!-- 主体部分 end -->

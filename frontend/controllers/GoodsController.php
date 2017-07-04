@@ -203,15 +203,19 @@ class GoodsController extends \yii\web\Controller{
     public function actionOrder()
     {
         $member_id = \Yii::$app->user->id;
-        $flows = Flow::findAll(['member_id'=>$member_id]);
-        $address = Address::findAll(['member_id'=>$member_id]);
-        $models = [];
-        foreach ($flows as $flow) {
-            $goods = Goods::findOne(['id' => $flow])->attributes;//这里要转换成数组,不然一会不能添加商品数据
-            $goods['amount'] = $flow->amount;
-            $models[] = $goods;
+        if($member_id){
+            $flows = Flow::findAll(['member_id'=>$member_id]);
+            $address = Address::findAll(['member_id'=>$member_id]);
+            $models = [];
+            foreach ($flows as $flow) {
+                $goods = Goods::findOne(['id' => $flow])->attributes;//这里要转换成数组,不然一会不能添加商品数据
+                $goods['amount'] = $flow->amount;
+                $models[] = $goods;
+            }
+            return $this->render('flow2',['models'=>$models,'address'=>$address]);
+        }else{
+            return $this->redirect('/member/login.html');
         }
-        return $this->render('flow2',['models'=>$models,'address'=>$address]);
     }
 
     //添加订单
